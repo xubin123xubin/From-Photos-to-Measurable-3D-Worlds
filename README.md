@@ -4,4 +4,4 @@ We would like to express our gratitude to the following projects for their valua
 
 - [Reall3dViewer](https://github.com/reall3d-com/Reall3dViewer)
 - [gsbox](https://github.com/gotoeasy/gsbox)
-- [InstantSplat](https://github.com/NVlabs/InstantSplat)
+- [InstantSplat: Sparse-view Gaussian Splatting in Seconds](https://github.com/NVlabs/InstantSplat)
