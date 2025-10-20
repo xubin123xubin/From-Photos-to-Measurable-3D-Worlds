@@ -1,0 +1,433 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <title>Reall3dViewer</title>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+        /* ===== 全局样式 ===== */
+        :root {
+            --primary-color: #5b99f7;
+            --secondary-color: #4960d6;
+            --accent-color: #6a4cff;
+            --dark-bg: rgba(0, 0, 0, 0.85);
+            --light-bg: rgba(255, 255, 255, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+        }
+
+        /* ===== 进度条样式 ===== */
+        #progressBarWrap {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== 信息面板样式 ===== */
+        .debug-panel {
+            background: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            font-size: 13px;
+            width: 330px;
+        }
+
+        .debug-panel table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .debug-panel tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .debug-panel tr:last-child {
+            border-bottom: none;
+        }
+
+        .debug-panel td {
+            padding: 6px 0;
+        }
+
+        .debug-panel td:first-child {
+            color: #a0a0ff;
+            width: 80px;
+        }
+
+        /* ===== 操作面板样式 ===== */
+        .operation-panel {
+            background: var(--dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: height 0.3s ease, padding 0.3s ease;
+            height: auto;
+            padding: 12px;
+            width: 280px;
+            /* 固定宽度，防止横向滚动 */
+            max-height: 90vh;
+            /* 限制最大高度 */
+            overflow-y: auto;
+            /* 仅垂直滚动 */
+            overflow-x: hidden;
+            /* 禁止横向滚动 */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+            scrollbar-color: rgba(91, 153, 247, 0.3) rgba(0, 0, 0, 0.2);
+        }
+
+        .operation-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            /* 更深的轨道背景 */
+            border-radius: 3px;
+        }
+
+        .operation-panel::-webkit-scrollbar-thumb {
+            background: rgba(91, 153, 247, 0.4);
+            /* 半透明的主色，更暗 */
+            border-radius: 3px;
+            transition: background 0.2s ease;
+        }
+
+        .operation-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(91, 153, 247, 0.6);
+            /* 悬停时稍微亮一点 */
+        }
+
+        .operation-panel::-webkit-scrollbar-thumb:active {
+            background: rgba(91, 153, 247, 0.5);
+            /* 点击时 */
+        }
+
+        /* Webkit浏览器滚动条样式 - 仅垂直 */
+        .operation-panel::-webkit-scrollbar {
+            width: 6px;
+            height: 0;
+            /* 隐藏横向滚动条 */
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+        }
+
+        .panel-header>div {
+            display: flex;
+            gap: 8px;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .btn-group-title {
+            width: 100%;
+            color: #a0a0ff;
+            font-size: 12px;
+            margin: 5px 0;
+            text-align: center;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 60px;
+            background: var(--light-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .btn:hover {
+            background: rgba(91, 153, 247, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .btn.active {
+            background: rgba(91, 153, 247, 0.3);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-small {
+            min-width: 40px;
+            padding: 6px;
+        }
+
+        .btn-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-icon:hover {
+            background: rgba(91, 153, 247, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .gstext {
+            width: 140px;
+            /* 减小宽度 */
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        .gstext::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .panel-content {
+            transition: opacity 0.3s ease;
+        }
+
+        .operation-panel.collapsed {
+            height: 35px;
+            padding-bottom: 5px;
+        }
+
+        .operation-panel.collapsed .panel-content {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body style="background: black; height: 100vh; margin: 0px; overflow: hidden">
+    <div id="gsviewer">
+        <div class="logo loading" onclick="window.open('https://www.sau.edu.cn/', '_blank');"
+            style="position: absolute; top: 30px; left: 20px; width: 40px; height: 40px; z-index: 9999; cursor: pointer">
+            <img src="/favicon.ico" style="width: 110%; height: 110%; object-fit: contain" />
+        </div>
+        <div id="progressBarWrap" class="prd-mode" style="
+                    display: none;
+                    z-index: 9999;
+                    width: 38px;
+                    height: 5px;
+                    border-radius: 10px;
+                    position: absolute;
+                    top: 76px;
+                    left: 20px;
+                    overflow: hidden;
+                    padding: 1px;
+                ">
+            <div id="progressBar"
+                style="width: 0%; height: 100%; background: linear-gradient(90deg, #5b99f7 0%, #4960d6 100%); border-radius: 10px">
+            </div>
+        </div>
+
+        <!-- 信息面板 -->
+        <div class="debug dev-panel prd-mode debug-panel"
+            style="display: none; position: absolute; bottom: 20px; left: 20px;">
+            <table>
+                <tr class="tr-memory">
+                    <td>内存:</td>
+                    <td><span class="memory"></span></td>
+                </tr>
+                <tr>
+                    <td>帧率:</td>
+                    <td><span class="fps">-</span> (<span class="realFps">-</span>)</td>
+                </tr>
+                <tr>
+                    <td>排序:</td>
+                    <td><span class="sort">-</span></td>
+                </tr>
+                <tr>
+                    <td>点云:</td>
+                    <td>
+                        <span class="renderSplatCount">-</span> / <span class="visibleSplatCount">-</span> /
+                        <span class="modelSplatCount">-</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>场景:</td>
+                    <td><span class="scene"></span> <span class="cuts"></span></td>
+                </tr>
+                <tr class="tr-pc-only map-hidden">
+                    <td>SH (0~3):</td>
+                    <td class="shDegree">-</td>
+                </tr>
+                <tr class="tr-pc-only map-hidden">
+                    <td>缩放:</td>
+                    <td class="scale"></td>
+                </tr>
+                <tr class="tr-pc-only">
+                    <td>视角:</td>
+                    <td class="fov"></td>
+                </tr>
+                <tr>
+                    <td>位置:</td>
+                    <td class="position"></td>
+                </tr>
+                <tr>
+                    <td>视角点:</td>
+                    <td class="lookAt"></td>
+                </tr>
+                <tr class="tr-pc-only">
+                    <td>视角上:</td>
+                    <td class="lookUp"></td>
+                </tr>
+                <tr>
+                    <td>版本:</td>
+                    <td class="viewer-version"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 操作面板 -->
+        <div class="operation dev-panel prd-mode operation-panel"
+            style="display: none; position: absolute; bottom: 20px; right: 20px;">
+            <div class="panel-header">
+                <div class="panel-title">控制面板</div>
+                <div>
+                    <span class="btn-icon switch-debug" title="隐藏/显示信息面板">ⓘ</span>
+                    <span class="btn-icon op-show" title="折叠/展开面板">－</span>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <div class="btn-group">
+                    <div class="btn-group-title">三维重建</div>
+                    <input type="file" id="upload-images" accept="image/*" multiple style="display: none">
+                    <span class="btn upload-image" title="上传重建图片">上传图片</span>
+                    <span class="btn start-reconstruction" title="开始三维重建">开始重建</span>
+                    <span class="btn save-model" title="保存重建模型">保存模型</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">视图控制</div>
+                    <span class="btn switch-rotate" title="开始/停止旋转">旋转</span>
+                    <span class="btn switch-pointcloudMode" title="点云模式">点云</span>
+                    <span class="btn switch-deiplay-mode" title="切换显示模式">过渡效果</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">亮度控制</div>
+                    <span class="btn btn-small sub-lightFactor" title="降低亮度">－</span>
+                    <span class="btn default-lightFactor" title="默认亮度">默认</span>
+                    <span class="btn btn-small add-lightFactor" title="增加亮度">＋</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">SH控制</div>
+                    <span class="btn btn-small sub-sh" title="降低SH">－</span>
+                    <span class="btn default-sh" title="默认SH">默认SH</span>
+                    <span class="btn btn-small add-sh" title="增加SH">＋</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">演示场景</div>
+                    <span class="btn demo1" title="小圆桌场景演示">小圆桌</span>
+                    <span class="btn demo2" title="天际阁场景演示">天际阁</span>
+                    <span class="btn demo3" title="大街景场景演示">大街景</span>
+                    <span class="btn demo4" title="宝章阁场景演示">宝章阁</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">高级功能</div>
+                    <span class="btn map" title="地图场景">地图场景</span>
+                    <span class="btn ppt" title="3D PPT">3D-PPT</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">水印控制</div>
+                    <div class="input-group">
+                        <span class="btn btn-small show-watermark" title="显示水印">显示</span>
+                        <input type="text" class="gstext" value="" placeholder="输入水印文字" title="输入水印文字" />
+                        <span class="btn btn-small hide-watermark" title="隐藏水印">隐藏</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">标记工具</div>
+                    <span class="btn btn-small mark-hide" title="隐藏标记">隐藏</span>
+                    <span class="btn btn-small mark-show" title="显示标记">显示</span>
+                    <span class="btn btn-small mark-save" title="保存标记">保存</span>
+                    <span class="btn btn-small mark-del" title="删除标记">删除</span>
+                    <span class="btn btn-small mark-point" title="点标记">点</span>
+                    <span class="btn btn-small mark-lines" title="线标记">线</span>
+                    <span class="btn btn-small mark-plans" title="面标记">面</span>
+                    <span class="btn btn-small mark-distance" title="距离标记">距离</span>
+                    <span class="btn btn-small mark-circle" title="圆形标记">圆</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">相机飞行</div>
+                    <span class="btn add-pos" title="添加飞行点">添加点</span>
+                    <span class="btn clear-pos" title="清除飞行点">删除点</span>
+                    <span class="btn fly" title="开始飞行">开始飞行</span>
+                    <span class="btn fly-save" title="保存路径">保存</span>
+                </div>
+
+                <div class="btn-group">
+                    <div class="btn-group-title">无人机飞行</div>
+                    <span class="btn add-drone-path" title="添加无人机路径点">添加路径</span>
+                    <span class="btn delete-drone-path" title="删除无人机路径">删除路径</span>
+                    <span class="btn start-drone-flight" title="开始无人机飞行">开始飞行</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./src/index.ts"></script>
+</body>
+
+</html>
