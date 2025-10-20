@@ -1,4 +1,4 @@
-https://easylink.cc/o8052c
+Click the link to watch the video. https://easylink.cc/o8052c
 
 ## Acknowledgments
 
