@@ -1,3 +1,5 @@
+The project's code is being organized and uploaded in stages.
+
 Click the link to watch the video. https://easylink.cc/o8052c
 
 ## Acknowledgments
