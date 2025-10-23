@@ -1,0 +1,4 @@
+# ninja log v5
+0	12495	1752931380811977989	/home/mimi/桌面/bin/InstantSplat/submodules/simple-knn/build/temp.linux-x86_64-cpython-310/simple_knn.o	3bf3857be7905168
+0	22308	1752931390609063474	/home/mimi/桌面/bin/InstantSplat/submodules/simple-knn/build/temp.linux-x86_64-cpython-310/ext.o	5a0bade0458cafdb
+0	63631	1752931431938413003	/home/mimi/桌面/bin/InstantSplat/submodules/simple-knn/build/temp.linux-x86_64-cpython-310/spatial.o	bc720ca8c9b4e0fe

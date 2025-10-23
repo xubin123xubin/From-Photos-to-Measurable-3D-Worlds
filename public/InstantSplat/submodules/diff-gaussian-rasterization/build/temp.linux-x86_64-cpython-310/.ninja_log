@@ -1,0 +1,6 @@
+# ninja log v5
+1	3672	1752931464682677871	/home/mimi/桌面/bin/InstantSplat/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/forward.o	d6556656cd63e3be
+0	3692	1752931464698677998	/home/mimi/桌面/bin/InstantSplat/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/backward.o	a0a6bf599fe1ef79
+1	9381	1752931470382722945	/home/mimi/桌面/bin/InstantSplat/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/cuda_rasterizer/rasterizer_impl.o	b226e0f52cd98433
+2	21173	1752931482155815104	/home/mimi/桌面/bin/InstantSplat/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/ext.o	6a0653d1621d39b0
+2	61747	1752931522737123432	/home/mimi/桌面/bin/InstantSplat/submodules/diff-gaussian-rasterization/build/temp.linux-x86_64-cpython-310/rasterize_points.o	eee78b064a2f7c32
