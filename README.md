@@ -11,7 +11,7 @@ mkdir -p mast3r/checkpoints/
 wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P mast3r/checkpoints/
 ```
 
-2. Create the environment (or use pre-built docker), here we show an example using conda.
+2. Create the environment, here we show an example using conda.
 ```bash
 conda create -n instantsplat python=3.10.13 cmake=3.14.0 -y
 conda activate instantsplat
@@ -31,11 +31,11 @@ pip install submodules/fused-ssim
 
 2. Command
 ```bash
-  # InstantSplat train and output video (no GT reference, render by interpolation) using the following command.
+  # Train and output video using the following command.
   # Users can place their data in the 'assets/examples/<scene_name>/images' folder and run the following command directly.
   bash scripts/run_infer.sh
 
-  # InstantSplat train and evaluate (with GT reference) using the following command.
+  # Train and evaluate using the following command.
   bash scripts/run_eval.sh
 ```
 
@@ -52,10 +52,10 @@ npm run dev
 
 ## Others
 **If you have any concerns or questions, please contact us at xubin@stu.sau.edu.cn**
+
 If the paper is fortunate enough to be accepted, we will optimize the code into a more mature and stable version.
 
 ## Acknowledgments
-
 We are deeply grateful to the following projects for their invaluable reference implementations.
 
 - [Reall3dViewer](https://github.com/reall3d-com/Reall3dViewer)
