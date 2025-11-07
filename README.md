@@ -1,51 +1,57 @@
 # One-Click Web-Based 3D Reconstruction: A System for Interactive and Measurable 3D Scenes Using Gaussian Splatting
 Click the link to watch the video. https://easylink.cc/o8052c
 
-### How to setup (recommended in Conda)
-
-Our experiments are done in Windows11, Visual Studio 2019 for Windows (C++ compiler), CUDA SDK 11.8, just for reference.
-
-1. Follow the steps in https://github.com/graphdeco-inria/gaussian-splatting to build the environment
-
-2. run
-
-   ```
-   pip install clip
-   ```
-
-### How to train
-
-run
-
-```
-python train2.py -s <PATH-to-dataset>
+## 3D Reconstruction
+### Installation
+1. Clone InstantSplat and download pre-trained model.
+```bash
+git clone --recursive https://github.com/NVlabs/InstantSplat.git
+cd InstantSplat
+mkdir -p mast3r/checkpoints/
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P mast3r/checkpoints/
 ```
 
-It is worth stating that these codes are the versions we used to conduct our experiments. To avoid problems such as long training times, we recommend that you change the number on line 142 in train2.py to the number of images in your training set or half the number of images. 
-
-Of course, it will also work fine without any modifications. 
-
-If the paper is fortunate enough to be accepted, we will update a version of the code that allows you to set these parameters on the command line.
-
-### How to view
-
-run
-
-```
-cd .\viewers\bin
-.\SIBR_gaussianViewer_app.exe -m <PATH-to-output>
+2. Create the environment (or use pre-built docker), here we show an example using conda.
+```bash
+conda create -n instantsplat python=3.10.13 cmake=3.14.0 -y
+conda activate instantsplat
+conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia  # use the correct version of cuda for your system
+pip install -r requirements.txt
+pip install submodules/simple-knn
+pip install submodules/diff-gaussian-rasterization
+pip install submodules/fused-ssim
 ```
 
-### How to get the pretrained models and the low-quality datasets (which are mentioned in our paper)
+### Usage
+1. Data preparation (download our pre-processed data from: [Hugging Face](https://huggingface.co/datasets/kairunwen/InstantSplat) or [Google Drive](https://drive.google.com/file/d/1Z17tIgufz7-eZ-W0md_jUlxq89CD1e5s/view))
+```bash
+  cd <data_path>
+  # then do whatever data preparation
+```
 
-pretrained models: download in Releases
+2. Command
+```bash
+  # InstantSplat train and output video (no GT reference, render by interpolation) using the following command.
+  # Users can place their data in the 'assets/examples/<scene_name>/images' folder and run the following command directly.
+  bash scripts/run_infer.sh
 
-low-quality datasets: use *blur2.py*
+  # InstantSplat train and evaluate (with GT reference) using the following command.
+  bash scripts/run_eval.sh
+```
 
-### Others
+## 3D Visualization
+### Installation
+```bash
+npm install @reall3d/reall3dviewer
+```
 
-**If you have any concerns or questions, please contact us at chesszh@foxmail.com**
+### Usage
+```bash
+npm run dev
+```
 
+## Others
+**If you have any concerns or questions, please contact us at xubin@stu.sau.edu.cn**
 If the paper is fortunate enough to be accepted, we will optimize the code into a more mature and stable version.
 
 ## Acknowledgments
