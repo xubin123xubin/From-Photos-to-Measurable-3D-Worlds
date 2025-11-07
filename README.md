@@ -5,6 +5,8 @@ Click the link to watch the video. https://easylink.cc/o8052c
 ### Installation
 1. Clone InstantSplat and download pre-trained model.
 ```bash
+git clone https://github.com/xubin123xubin/From-Photos-to-Measurable-3D-Worlds.git
+cd public
 git clone --recursive https://github.com/NVlabs/InstantSplat.git
 cd InstantSplat
 mkdir -p mast3r/checkpoints/
