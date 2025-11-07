@@ -3,7 +3,7 @@ Click the link to watch the video. https://easylink.cc/o8052c
 
 ## 3D Reconstruction
 ### Installation
-1. Clone InstantSplat and download pre-trained model.
+1. Clone project and download pre-trained model.
 ```bash
 git clone https://github.com/xubin123xubin/From-Photos-to-Measurable-3D-Worlds.git
 cd public
