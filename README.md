@@ -66,4 +66,4 @@ We are deeply grateful to the following projects for their invaluable reference 
 - [InstantSplat: Sparse-view Gaussian Splatting in Seconds](https://github.com/NVlabs/InstantSplat)
 
 ## Citation
-If you find our work beneficial in your research, please consider citing this paper. Please note that this paper is currently under review at The Visual Computers journal. The formal citation format will be provided upon acceptance.
+If you find our work beneficial in your research, please consider citing this paper. The formal citation format will be provided upon acceptance.
